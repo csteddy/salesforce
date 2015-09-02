@@ -1,0 +1,10 @@
+// Trigger runs getLocation() on Properties with no Geolocation
+trigger SetGeolocation on Property__c (after insert, after update) {
+    if (geoLocationProcessorControl.notFutureContext() == False){
+      geoLocationProcessorControl.setFutureContext();
+        for (Property__c p : trigger.new){
+            if (p.Lat_Long__Latitude__s == null)
+                GeocodePropertyLocation.getLocation(p.id);
+            }
+    }
+}
